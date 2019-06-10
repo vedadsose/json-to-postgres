@@ -1,0 +1,7 @@
+{
+  "name": "mongo-to-postgres",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Vedad Sose <vedadsose@gmail.com>"
+}
