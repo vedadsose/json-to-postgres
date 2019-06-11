@@ -1,7 +1,11 @@
 {
   "name": "mongo-to-postgres",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "license": "MIT",
-  "author": "Vedad Sose <vedadsose@gmail.com>"
+  "author": "Vedad Sose <vedadsose@gmail.com>",
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "ramda": "^0.26.1"
+  }
 }
