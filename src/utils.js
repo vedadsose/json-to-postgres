@@ -19,6 +19,8 @@ const getFieldType = field => {
       switch (innerKeys[0]) {
         case '$oid':
           return 'VARCHAR'
+        case '$numberInt':
+          return 'NUMERIC'
         case '$numberLong':
           return 'BIGINT'
         default:
@@ -65,6 +67,7 @@ const getFieldValue = field => {
         case '$oid':
           return `'${field[innerKeys[0]]}'`
         case '$numberLong':
+        case '$numberInt':
           return field[innerKeys[0]]
         default:
           return `'${JSON.stringify(field)}'`
