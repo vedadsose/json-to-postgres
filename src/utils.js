@@ -9,29 +9,34 @@ const getFieldType = field => {
     return 'NUMERIC'
   }
 
+  if (is(Boolean, field)) {
+    return 'BOOLEAN'
+  }
+
   if (field === null) {
     return null
   }
 
   if (typeof field === 'object') {
-    const innerKeys = keys(field)
-    if (innerKeys.length === 1) {
-      switch (innerKeys[0]) {
-        case '$oid':
-          return 'VARCHAR'
-        case '$numberInt':
-          return 'NUMERIC'
-        case '$numberLong':
-          return 'BIGINT'
-        default:
-          return 'JSON'
-      }
-    } else {
-      return 'JSON'
-    }
+    return 'JSON'
+    // const innerKeys = keys(field)
+    // if (innerKeys.length === 1) {
+    //   switch (innerKeys[0]) {
+    //     case '$oid':
+    //       return 'VARCHAR'
+    //     case '$numberInt':
+    //       return 'NUMERIC'
+    //     case '$numberLong':
+    //       return 'BIGINT'
+    //     default:
+    //       return 'JSON'
+    //   }
+    // } else {
+    //   return 'JSON'
+    // }
   }
 
-  return typeof field
+  throw new Error(`Missing definition for ${typeof field}`)
 }
 
 const getFieldTypes = body =>
@@ -56,25 +61,16 @@ const getFieldValue = field => {
     return field
   }
 
+  if (is(Boolean, field)) {
+    return field ? 'TRUE' : 'FALSE'
+  }
+
   if (field === null) {
     return 'NULL'
   }
 
   if (typeof field === 'object') {
-    const innerKeys = keys(field)
-    if (innerKeys.length === 1) {
-      switch (innerKeys[0]) {
-        case '$oid':
-          return `'${field[innerKeys[0]]}'`
-        case '$numberLong':
-        case '$numberInt':
-          return field[innerKeys[0]]
-        default:
-          return `'${JSON.stringify(field)}'`
-      }
-    } else {
-      return `'${JSON.stringify(field)}'`
-    }
+    return `'${escapeString(JSON.stringify(field))}'`
   }
 
   return field

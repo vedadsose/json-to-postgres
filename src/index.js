@@ -7,11 +7,11 @@ const { getFieldTypes, getFieldValue } = require('./utils')
 const parser = new ArgumentParser({
   version: '1.0.0',
   addHelp: true,
-  description: 'Convert Postgres collection to SQL dump'
+  description: 'Convert JSON file to an SQL dump'
 })
 
 parser.addArgument('file', {
-  help: 'Path to the collection json'
+  help: 'Path to the json file'
 })
 
 parser.addArgument(['-n', '--name'], {
@@ -47,10 +47,7 @@ readFile(args.file, 'UTF-8', (error, data) => {
     return
   }
 
-  const entries = data
-    .split('\n')
-    .filter(Boolean)
-    .map(JSON.parse)
+  const entries = JSON.parse(data)
 
   console.log('Starting to compute the schema...')
 
