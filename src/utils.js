@@ -19,21 +19,6 @@ const getFieldType = field => {
 
   if (typeof field === 'object') {
     return 'JSON'
-    // const innerKeys = keys(field)
-    // if (innerKeys.length === 1) {
-    //   switch (innerKeys[0]) {
-    //     case '$oid':
-    //       return 'VARCHAR'
-    //     case '$numberInt':
-    //       return 'NUMERIC'
-    //     case '$numberLong':
-    //       return 'BIGINT'
-    //     default:
-    //       return 'JSON'
-    //   }
-    // } else {
-    //   return 'JSON'
-    // }
   }
 
   throw new Error(`Missing definition for ${typeof field}`)
