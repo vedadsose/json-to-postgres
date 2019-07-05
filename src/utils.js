@@ -105,7 +105,7 @@ const parseEntry = (tableName, schema) => entry => {
     keys,
     filter(key => {
       const field = path(split('__', key), entry)
-      return !!field
+      return field !== null && field !== undefined
     })
   )(schema)
 
