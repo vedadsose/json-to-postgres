@@ -1,8 +1,8 @@
 const { ArgumentParser } = require('argparse')
 const { readFile, writeFile } = require('fs')
-const { pipe, keys, values, join, reduce, map } = require('ramda')
+const { pipe, keys, join, map } = require('ramda')
 
-const { getFieldTypes, getFieldValue } = require('./utils')
+const { getFieldTypes, parseEntry } = require('./utils')
 
 const parser = new ArgumentParser({
   version: '1.0.0',
@@ -61,29 +61,13 @@ readFile(args.file, 'UTF-8', (error, data) => {
   const fields = keys(schema)
     .map(field => `  ${field} ${schema[field]}`)
     .join(',\n')
+
   const createTableSQL = `CREATE TABLE ${args.name} (\n${fields}\n);`
 
-  const entriesSQL = entries
-    .map(entry => {
-      const cleanedEntry = pipe(
-        keys,
-        reduce(
-          (newEntry, key) =>
-            entry[key] !== '' ? { ...newEntry, [key]: entry[key] } : newEntry,
-          {}
-        )
-      )(entry)
-
-      return `INSERT INTO ${args.name} (${pipe(
-        keys,
-        join(', ')
-      )(cleanedEntry)}) VALUES (${pipe(
-        values,
-        map(getFieldValue),
-        join(', ')
-      )(cleanedEntry)});`
-    })
-    .join('\n')
+  const entriesSQL = pipe(
+    map(parseEntry(args.name, schema)),
+    join('\n')
+  )(entries)
 
   const result = [
     '/* TABLE CREATION */',
