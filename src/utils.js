@@ -57,7 +57,7 @@ const getFieldTypes = (body, prefix = '') =>
         fieldName === 'track__album__availablemarkets'
           ? 'VARCHAR'
           : getFieldType(body[key])
-      console.log({ fieldName, type })
+
       // Skip null types
       if (!type) return acc
 
